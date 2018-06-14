@@ -12,7 +12,7 @@ func handleErr(err error) {
 }
 
 func main() {
-	udpsendcmd := exec.Command("udp-receiver", "--pipe \"gzip -d\"", "--file warpeace.txt")
+	udpsendcmd := exec.Command("udp-receiver", "--pipe", "\"gzip -d\"", "--file", "warpeace.txt")
 
 	sendout, err := udpsendcmd.Output()
 	handleErr(err)
