@@ -1,4 +1,4 @@
-package gocastreceive
+package goudpcast
 
 import (
 	"bytes"

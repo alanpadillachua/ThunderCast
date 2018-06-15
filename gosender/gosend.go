@@ -1,4 +1,4 @@
-package gocastsend
+package goudpcast
 
 import (
 	"fmt"
