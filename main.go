@@ -9,16 +9,18 @@ import (
 )
 
 func main() {
-	http.Handle("/", http.FileServer(http.Dir("./public")))
+	http.Handle("/", http.FileServer(http.Dir("./Public")))
 	http.HandleFunc("/upload", UploadFile)
-	//http.HandleFunc(prefix+"/login", login)
+	log.Println("Listening on Port 3000")
 	if err := http.ListenAndServe(":3000", nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+	//
 }
 
 // UploadFile uploads a file to the server
 func UploadFile(w http.ResponseWriter, r *http.Request) {
+	log.Println("Connection from: " + r.Host)
 	if r.Method != http.MethodPost {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
@@ -30,16 +32,17 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer file.Close()
-
-	mimeType := handle.Header.Get("Content-Type")
-	switch mimeType {
-	case "image/jpeg":
-		saveFile(w, file, handle)
-	case "image/png":
-		saveFile(w, file, handle)
-	default:
-		jsonResponse(w, http.StatusBadRequest, "The format file is not valid.")
-	}
+	saveFile(w, file, handle)
+	/*
+		mimeType := handle.Header.Get("Content-Type")
+		switch mimeType {
+		case "image/jpeg":
+			saveFile(w, file, handle)
+		case "image/png":
+			saveFile(w, file, handle)
+		default:
+			jsonResponse(w, http.StatusBadRequest, "The format file is not valid.")
+		}*/
 }
 
 func saveFile(w http.ResponseWriter, file multipart.File, handle *multipart.FileHeader) {
@@ -48,7 +51,7 @@ func saveFile(w http.ResponseWriter, file multipart.File, handle *multipart.File
 		fmt.Fprintf(w, "%v", err)
 		return
 	}
-
+	log.Println("Uploading File: " + handle.Filename)
 	err = ioutil.WriteFile("./files/"+handle.Filename, data, 0666)
 	if err != nil {
 		fmt.Fprintf(w, "%v", err)
