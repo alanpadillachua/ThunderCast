@@ -18,7 +18,16 @@ minimum-scale=1.0">
         <label class="uploadForm__label" for="inputFile">
             <i class="fa fa-upload uploadForm__icon"></i> Select a file
         </label>
+        <label for="ipaddr"><b>IP Address</b></label>
+        <input type="text" placeholder="Enter IP Address" name="ipaddr" required>
+            
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" required>
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
     </form>
+    
+            
     <div class="notification" id="alert"></div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="api.js"></script>

@@ -1,8 +1,9 @@
-h1 {
-    margin: 40px;
+.h1 {
+    margin: 50px;
     font-weight: normal;
     text-align: center;
 }
+
 
 body {
     margin: 0;
@@ -20,12 +21,14 @@ body,
     justify-content: center;
 }
 
+
+
 .uploadForm {
     width: 600px;
     max-width: 600px;
     height: 300px;
     flex-direction: column;
-    border: 2px dashed gray;
+    border: 3px dashed lightblue;
     font-family: inherit;
 }
 
@@ -49,6 +52,14 @@ body,
 
 .uploadForm__icon {
     font-size: 1.8em;
+}
+
+.ipaddr, 
+.uname,
+.psw {
+    padding: 40px;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .notification {
