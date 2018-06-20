@@ -1,26 +1,69 @@
 package main
 
 import (
-	"crypto/md5"
 	"fmt"
-	"html/template"
-	"io"
+	"io/ioutil"
 	"log"
+	"mime/multipart"
 	"net/http"
-	"os"
-	"strconv"
-	"time"
 )
 
 func main() {
-	const prefix = ""
-	http.HandleFunc(prefix+"/upload", upload)
+	http.Handle("/", http.FileServer(http.Dir("./public")))
+	http.HandleFunc("/upload", UploadFile)
 	//http.HandleFunc(prefix+"/login", login)
 	if err := http.ListenAndServe(":3000", nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }
 
+// UploadFile uploads a file to the server
+func UploadFile(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	file, handle, err := r.FormFile("file")
+	if err != nil {
+		fmt.Fprintf(w, "%v", err)
+		return
+	}
+	defer file.Close()
+
+	mimeType := handle.Header.Get("Content-Type")
+	switch mimeType {
+	case "image/jpeg":
+		saveFile(w, file, handle)
+	case "image/png":
+		saveFile(w, file, handle)
+	default:
+		jsonResponse(w, http.StatusBadRequest, "The format file is not valid.")
+	}
+}
+
+func saveFile(w http.ResponseWriter, file multipart.File, handle *multipart.FileHeader) {
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Fprintf(w, "%v", err)
+		return
+	}
+
+	err = ioutil.WriteFile("./files/"+handle.Filename, data, 0666)
+	if err != nil {
+		fmt.Fprintf(w, "%v", err)
+		return
+	}
+	jsonResponse(w, http.StatusCreated, "File uploaded successfully!.")
+}
+
+func jsonResponse(w http.ResponseWriter, code int, message string) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	fmt.Fprint(w, message)
+}
+
+/*
 func upload(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "GET" {
@@ -49,6 +92,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		io.Copy(f, file)
 	}
 }
+*/
 
 /*
 func login(w http.ResponseWriter, r *http.Request) {
