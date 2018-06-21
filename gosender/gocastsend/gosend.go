@@ -1,4 +1,4 @@
-package gosender
+package gocastsend
 
 import (
 	"bufio"
@@ -33,7 +33,7 @@ func send(file string) {
 }
 
 func compress(file string) {
-	f, _ := os.Open("../files/" + file)
+	f, _ := os.Open("./files/" + file)
 
 	// Create a Reader and use ReadAll to get all the bytes from the file.
 	reader := bufio.NewReader(f)
@@ -42,7 +42,7 @@ func compress(file string) {
 	// Replace txt extension with gz extension.
 
 	// Open file for writing.
-	f, _ = os.Create("../files/" + file)
+	f, _ = os.Create("./files/" + file)
 
 	// Write compressed data.
 	w := gzip.NewWriter(f)
