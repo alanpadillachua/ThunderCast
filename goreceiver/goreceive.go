@@ -1,4 +1,4 @@
-package goudpcast
+package goreceiver
 
 import (
 	"bytes"
@@ -58,5 +58,9 @@ func receive(file string) {
 
 	fmt.Println(outStr)
 	fmt.Println(outErr)
+
+}
+
+func decompress(file string) {
 
 }

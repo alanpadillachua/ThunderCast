@@ -1,7 +1,11 @@
-package goudpcast
+package gosender
 
 import (
+	"bufio"
+	"compress/gzip"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 )
@@ -26,17 +30,25 @@ func send(file string) {
 		os.Exit(1)
 	}
 	fmt.Printf("%s\n", out)
-	/*
-		err = cmd.Start()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
-			os.Exit(1)
-		}
+}
 
-		err = cmd.Wait()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error waiting for Cmd", err)
-			os.Exit(1)
-		}
-	*/
+func compress(file string) {
+	f, _ := os.Open("../files/" + file)
+
+	// Create a Reader and use ReadAll to get all the bytes from the file.
+	reader := bufio.NewReader(f)
+	content, _ := ioutil.ReadAll(reader)
+
+	// Replace txt extension with gz extension.
+
+	// Open file for writing.
+	f, _ = os.Create("../files/" + file)
+
+	// Write compressed data.
+	w := gzip.NewWriter(f)
+	w.Write(content)
+	w.Close()
+
+	// Done.
+	log.Println("File: " + file + " Compressed in ./files")
 }
