@@ -6,6 +6,8 @@ import (
 	"log"
 	"mime/multipart"
 	"net/http"
+
+	"github.com/alanpadillachua/GoCast/gosender/gocastsend"
 )
 
 func main() {
@@ -48,6 +50,8 @@ func saveFile(w http.ResponseWriter, file multipart.File, handle *multipart.File
 		return
 	}
 	jsonResponse(w, http.StatusCreated, "File uploaded successfully!.")
+
+	gocastsend.Send("./files/" + handle.Filename) // send file through diod
 }
 
 func jsonResponse(w http.ResponseWriter, code int, message string) {

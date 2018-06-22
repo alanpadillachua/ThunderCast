@@ -16,7 +16,8 @@ func handleErr(err error) {
 	}
 }
 
-func send(file string) {
+// Send file starts udp-sender and sends file
+func Send(file string) {
 	//udpsendcmd := exec.Command("udp-sender", "--async", "--file", "samplefiles/warpeace.txt")
 	//udpsendcmd := exec.Command("udp-sender", "--async", "--fec", "8x8", "--pipe", "\"gzip -fN\"", "--file", "samplefiles/warpeace.txt")
 

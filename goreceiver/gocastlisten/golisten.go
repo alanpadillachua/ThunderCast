@@ -1,4 +1,4 @@
-package goreceiver
+package gocastlisten
 
 import (
 	"bytes"
@@ -15,7 +15,8 @@ func handleErr(err error) {
 	}
 }
 
-func receive(file string) {
+// Receive starts udp-reciever
+func Receive(file string) {
 	udpcastcmd := "udp-receiver"
 	//"--pipe", "\"gzip -fd\"",
 	udpcastargs := []string{"--file", file}
