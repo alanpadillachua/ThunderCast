@@ -13,6 +13,7 @@ import (
 func main() {
 	http.Handle("/", http.FileServer(http.Dir("./Public")))
 	http.HandleFunc("/upload", UploadFile)
+	log.Println("Sender Server")
 	log.Println("Listening on Port 3000")
 	if err := http.ListenAndServe(":3000", nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
