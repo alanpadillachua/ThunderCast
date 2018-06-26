@@ -12,8 +12,10 @@ import (
 func main() {
 
 	router := mux.NewRouter()
-	router.Handle("/", http.FileServer(http.Dir("/Public")))
-	router.Handle("/files/{fn}", http.FileServer(http.Dir("/files")))
+	router.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("./Public"))))
+	//router.Handle("/", http.FileServer(http.Dir("./Public")))
+	router.Handle("/files/{fn}", http.StripPrefix("/files", http.FileServer(http.Dir("./files"))))
+
 	router.HandleFunc("/listen/{fn}", listen).Methods("GET")
 	//router.HandleFunc("/listfiles", listfiles).Methods("GET")
 	log.Println("Receiver Server")
