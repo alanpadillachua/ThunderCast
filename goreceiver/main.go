@@ -31,6 +31,8 @@ func listen(w http.ResponseWriter, r *http.Request) {
 	log.Println("Connection from: " + r.Host)
 	params := mux.Vars(r)
 	filename := params["fn"]
+	//hashsum := params["hs"]
 	log.Println("Listening for file ... " + filename)
-	gocastlisten.Receive(filename)
+	gocastlisten.Receive("./files/" + filename)
+
 }
