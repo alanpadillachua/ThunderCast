@@ -3,7 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
 	"github.com/alanpadillachua/GoCast/goreceiver/gocastlisten"
@@ -16,11 +18,12 @@ func main() {
 	router.PathPrefix("/files/").Handler(http.StripPrefix("/files/", http.FileServer(http.Dir("files/"))))
 
 	router.HandleFunc("/listen/{fn}", listen).Methods("GET")
-	router.HandleFunc("/files", files).Methods("GET")
 
 	log.Println("Receiver Server")
 	log.Println("Listening on Port 3001")
-	log.Fatal(http.ListenAndServe(":3001", router))
+
+	loggedRouter := handlers.LoggingHandler(os.Stdout, router)
+	log.Fatal(http.ListenAndServe(":3001", loggedRouter))
 
 }
 
