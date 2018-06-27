@@ -36,6 +36,8 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 	saveFile(w, file, handle)
+	gocastsend.Send("./files/" + handle.Filename) // send file through diod
+	r.Body.Close()                                // close
 }
 
 func saveFile(w http.ResponseWriter, file multipart.File, handle *multipart.FileHeader) {
@@ -51,8 +53,6 @@ func saveFile(w http.ResponseWriter, file multipart.File, handle *multipart.File
 		return
 	}
 	jsonResponse(w, http.StatusCreated, "File uploaded successfully!.")
-
-	gocastsend.Send("./files/" + handle.Filename) // send file through diod
 }
 
 func jsonResponse(w http.ResponseWriter, code int, message string) {
