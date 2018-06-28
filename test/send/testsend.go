@@ -8,5 +8,5 @@ import (
 
 func main() {
 	log.Println("Sending file...")
-	gocastsend.Send("../../gosender/samplefiles/" + "warpeace.txt")
+	gocastsend.Send("../../gosender/samplefiles/" + "ubuntu-18.04-desktop-amd64.iso")
 }
