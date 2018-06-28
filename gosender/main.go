@@ -28,7 +28,7 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-	if err := r.ParseMultipartForm(1024 << 32); err != nil {
+	if err := r.ParseMultipartForm(256 << 20); err != nil {
 		log.Println(err.Error())
 	}
 	file, handle, err := r.FormFile("file")
