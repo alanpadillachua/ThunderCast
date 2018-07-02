@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"net/http"
+	"os"
 
 	"github.com/alanpadillachua/GoCast/gosender/gocastsend"
 )
@@ -33,16 +35,50 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 	}*/
 	//reader, err := r.MultipartReader()
 
-	file, handle, err := r.FormFile("file")
-	log.Println("Reading file: " + handle.Filename)
+	// file, handle, err := r.FormFile("file")
+	// log.Println("Reading file: " + handle.Filename)
+	// if err != nil {
+	// 	fmt.Fprintf(w, "%v", err)
+	// 	return
+	// }
+	reader, err := r.MultipartReader()
 	if err != nil {
 		fmt.Fprintf(w, "%v", err)
+		log.Println(err.Error())
 		return
 	}
-	defer file.Close()
-	saveFile(w, file, handle)
-	gocastsend.Send("./files/" + handle.Filename) // send file through diod
-	r.Body.Close()                                // close
+	//copy each part to destination.
+	filename := ""
+	for {
+		part, err := reader.NextPart()
+		if err == io.EOF {
+			break
+		}
+		//if part.FileName() is empty, skip this iteration.
+		if part.FileName() == "" {
+			continue
+		}
+		dst, err := os.Create("./files/" + part.FileName())
+		filename = part.FileName()
+		defer dst.Close()
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		if _, err := io.Copy(dst, part); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+	log.Println("Reading file: " + filename)
+	jsonResponse(w, http.StatusCreated, "File uploaded successfully!.")
+
+	//defer file.Close()
+	//saveFile(w, file, handle)
+	gocastsend.Send("./files/" + filename) // send file through diod
+	r.Body.Close()                         // close
 }
 
 func saveFile(w http.ResponseWriter, file multipart.File, handle *multipart.FileHeader) {
