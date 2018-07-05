@@ -13,6 +13,6 @@ const filename = "warpeace.txt"
 func main() {
 	log.Println("Sending file...")
 	log.Println("Making call request to listen @:" + receiverListenIP)
-	go http.Get(receiverListenIP + filename)
-	gocastsend.Send("../../gosender/samplefiles/" + filename)
+	http.Get(receiverListenIP + filename)
+	go gocastsend.Send("../../gosender/samplefiles/" + filename)
 }
