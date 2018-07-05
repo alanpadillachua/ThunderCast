@@ -81,21 +81,6 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 	r.Body.Close()
 }
 
-// func saveFile(w http.ResponseWriter, file multipart.File, handle *multipart.FileHeader) {
-// 	data, err := ioutil.ReadAll(file)
-// 	if err != nil {
-// 		fmt.Fprintf(w, "%v", err)
-// 		return
-// 	}
-// 	log.Println("Uploading File: " + handle.Filename)
-// 	err = ioutil.WriteFile("./files/"+handle.Filename, data, 0666)
-// 	if err != nil {
-// 		fmt.Fprintf(w, "%v", err)
-// 		return
-// 	}
-// 	jsonResponse(w, http.StatusCreated, "File uploaded successfully!.")
-// }
-
 func startListening(file string) {
 	resp, err := http.Get(receiverListenIP + file)
 	if err != nil {
@@ -105,7 +90,7 @@ func startListening(file string) {
 	if resp.StatusCode == http.StatusOK {
 		resp.Body.Close()
 		log.Println("Transfering file: " + file)
-		go gocastsend.Send("./files/" + file) // send file through diod
+		gocastsend.Send("./files/" + file) // send file through diod
 	}
 
 }
