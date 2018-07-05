@@ -14,5 +14,6 @@ func main() {
 	log.Println("Sending file...")
 	log.Println("Making call request to listen @:" + receiverListenIP)
 	http.Get(receiverListenIP + filename)
-	go gocastsend.Send("../../gosender/samplefiles/" + filename)
+	gocastsend.Send("../../gosender/samplefiles/" + filename)
+	log.Panicln("Files sent")
 }
