@@ -25,7 +25,7 @@ func Send(file string) {
 
 	udpcastcmd := "udp-sender"
 	//"--pipe", "\"gzip -f\"",
-	udpcastargs := []string{"--nokbd", "--async", "--max-bitrate", "40m", "--fec", "8x8", "--file", file}
+	udpcastargs := []string{"--min-receivers", "1", "--nokbd", "--async", "--max-bitrate", "40m", "--fec", "8x8", "--file", file}
 	cmd := exec.Command(udpcastcmd, udpcastargs...)
 	var stdoutBuf, stderrBuf bytes.Buffer
 	stdoutIn, err := cmd.StdoutPipe()
