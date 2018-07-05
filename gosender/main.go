@@ -97,9 +97,15 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 // }
 
 func startListening(file string) {
-	http.Get(receiverListenIP + file)
-	log.Println("Transfering file: " + file)
-	gocastsend.Send("./files/" + file) // send file through diod
+	resp, err := http.Get(receiverListenIP + file)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+	if resp.StatusCode == http.StatusOK {
+		log.Println("Transfering file: " + file)
+		gocastsend.Send("./files/" + file) // send file through diod
+	}
 }
 func jsonResponse(w http.ResponseWriter, code int, message string) {
 	w.Header().Set("Content-Type", "application/json")
