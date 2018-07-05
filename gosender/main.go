@@ -103,9 +103,11 @@ func startListening(file string) {
 		return
 	}
 	if resp.StatusCode == http.StatusOK {
+		resp.Body.Close()
 		log.Println("Transfering file: " + file)
-		gocastsend.Send("./files/" + file) // send file through diod
+		go gocastsend.Send("./files/" + file) // send file through diod
 	}
+
 }
 func jsonResponse(w http.ResponseWriter, code int, message string) {
 	w.Header().Set("Content-Type", "application/json")
