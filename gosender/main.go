@@ -82,16 +82,16 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func startListening(file string) {
+	log.Println("Making call request to listen @:" + receiverListenIP)
 	resp, err := http.Get(receiverListenIP + file)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
-	if resp.StatusCode == http.StatusOK {
-		resp.Body.Close()
-		log.Println("Transfering file: " + file)
-		gocastsend.Send("./files/" + file) // send file through diod
-	}
+
+	resp.Body.Close()
+	log.Println("Transfering file: " + file)
+	gocastsend.Send("./files/" + file) // send file through diod
 
 }
 func jsonResponse(w http.ResponseWriter, code int, message string) {

@@ -35,5 +35,5 @@ func listen(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Ready to listen"))
 	//hashsum := params["hs"]
 	log.Println("Listening for file ... " + filename)
-	gocastlisten.Receive("./files/" + filename)
+	go gocastlisten.Receive("./files/" + filename)
 }
