@@ -44,8 +44,13 @@ func listen(w http.ResponseWriter, r *http.Request) {
 	}
 	if hashbuilt == hashsum {
 		log.Println("File hash verified\nFile transfered successfully")
+		log.Println("Hash Expected: " + hashsum)
+		log.Println("Hash Recieved: " + hashbuilt)
+
 	} else {
 		log.Println("Error File hash integreity lost. Please retry transfer ")
+		log.Println("Hash Expected: " + hashsum)
+		log.Println("Hash Recieved: " + hashbuilt)
 	}
 }
 
