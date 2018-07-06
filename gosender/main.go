@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/alanpadillachua/GoCast/gosender/gocastsend"
 )
@@ -83,15 +82,15 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func startListening(file string) {
-	log.Println("Making call request to listen @:" + receiverListenIP)
-	resp, err := http.Get(receiverListenIP + file)
-	if err != nil {
-		log.Println(err.Error())
-		return
-	}
+	// log.Println("Making call request to listen @:" + receiverListenIP)
+	// resp, err := http.Get(receiverListenIP + file)
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// 	return
+	// }
 
-	resp.Body.Close()
-	time.Sleep(2 * time.Second)
+	// resp.Body.Close()
+	// time.Sleep(2 * time.Second)
 	log.Println("Transfering file: " + file)
 	gocastsend.Send("./files/" + file) // send file through diod
 
