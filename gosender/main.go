@@ -75,7 +75,10 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println("Reading file: " + filename)
 	jsonResponse(w, http.StatusCreated, "File uploaded successfully!.")
-	startListening(filename)
+
+	go startListening(filename)
+	time.Sleep(5 * time.Second)
+
 	gocastsend.Send("./files/" + filename) // send file through diod
 	r.Body.Close()
 }
@@ -89,7 +92,7 @@ func startListening(file string) {
 	// }
 
 	// resp.Body.Close()
-	time.Sleep(5 * time.Second)
+
 	//log.Println("Transfering file: " + file)
 	//gocastsend.Send("./files/" + file) // send file through diod
 }
