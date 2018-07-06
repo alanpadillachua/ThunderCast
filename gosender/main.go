@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/alanpadillachua/GoCast/gosender/gocastsend"
 )
@@ -90,6 +91,7 @@ func startListening(file string) {
 	}
 
 	resp.Body.Close()
+	time.Sleep(2 * time.Second)
 	log.Println("Transfering file: " + file)
 	gocastsend.Send("./files/" + file) // send file through diod
 
