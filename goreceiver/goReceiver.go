@@ -38,7 +38,7 @@ func listen(w http.ResponseWriter, r *http.Request) {
 	log.Println("Hash of file: " + hashsum)
 	gocastlisten.Receive("./files/" + filename)
 
-	hashbuilt, err := hashFileMd5("./files/" + filename)
+	hashbuilt, err := hashFileMd5(filename)
 	if err != nil {
 		log.Println(err.Error())
 	}
