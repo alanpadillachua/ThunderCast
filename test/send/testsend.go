@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
-	"sync"
+	"time"
 
 	"github.com/alanpadillachua/GoCast/gosender/gocastsend"
 )
@@ -19,14 +19,9 @@ func main() {
 	// log.Panicln("Files sent")
 	//readyToSend := make(chan bool, 1)
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		http.Get(receiverListenIP + filename)
-		//readyToSend <- true
-	}()
-	wg.Wait()
+	http.Get(receiverListenIP + filename)
+
+	time.Sleep(1 * time.Second)
 	log.Println("Transfering file: " + filename)
 	gocastsend.Send("./files/" + filename) // send file through diod
 
