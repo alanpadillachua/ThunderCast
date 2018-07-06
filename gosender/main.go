@@ -77,7 +77,7 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 	jsonResponse(w, http.StatusCreated, "File uploaded successfully!.")
 
 	go startListening(filename)
-	time.Sleep(5 * time.Second)
+	time.Sleep(2 * time.Second)
 
 	gocastsend.Send("./files/" + filename) // send file through diod
 	r.Body.Close()
@@ -86,15 +86,6 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 func startListening(file string) {
 	log.Println("Making call request to listen @:" + receiverListenIP)
 	http.Get(receiverListenIP + file)
-	// if err != nil {
-	// 	log.Println(err.Error())
-	// 	return
-	// }
-
-	// resp.Body.Close()
-
-	//log.Println("Transfering file: " + file)
-	//gocastsend.Send("./files/" + file) // send file through diod
 }
 func jsonResponse(w http.ResponseWriter, code int, message string) {
 	w.Header().Set("Content-Type", "application/json")
