@@ -13,7 +13,7 @@ import (
 	"github.com/alanpadillachua/GoCast/gosender/gocastsend"
 )
 
-const receiverListenIP = "http://172.24.0.194:3001/listen/"
+const receiverListenIP = "http://172.24.0.194:3001/listen/v1?"
 
 func main() {
 	http.Handle("/", http.FileServer(http.Dir("./Public")))
@@ -33,17 +33,7 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-	/*if err := r.ParseMultipartForm(256 << 20); err != nil {
-		log.Println(err.Error())
-	}*/
-	//reader, err := r.MultipartReader()
 
-	// file, handle, err := r.FormFile("file")
-	// log.Println("Reading file: " + handle.Filename)
-	// if err != nil {
-	// 	fmt.Fprintf(w, "%v", err)
-	// 	return
-	// }
 	reader, err := r.MultipartReader()
 	if err != nil {
 		fmt.Fprintf(w, "%v", err)
@@ -85,16 +75,17 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("File hash: " + filehash)
 
-	go startListening(filename)
+	go startListening(filename, filehash)
 	time.Sleep(2 * time.Second)
 
 	gocastsend.Send("./files/" + filename) // send file through diod
 	r.Body.Close()
 }
 
-func startListening(file string) {
+func startListening(file string, hash string) {
 	log.Println("Making call request to listen @:" + receiverListenIP)
-	http.Get(receiverListenIP + file)
+	request := receiverListenIP + "filename=" + file + "&hash=" + hash
+	http.Get(request)
 }
 func jsonResponse(w http.ResponseWriter, code int, message string) {
 	w.Header().Set("Content-Type", "application/json")
