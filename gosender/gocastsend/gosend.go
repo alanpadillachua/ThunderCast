@@ -2,8 +2,10 @@ package gocastsend
 
 import (
 	"bufio"
+	"bytes"
 	"compress/gzip"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -25,50 +27,50 @@ func Send(file string) {
 	//"--pipe", "\"gzip -f\"", "--min-receivers", "1",
 	udpcastargs := []string{"--async", "--max-bitrate", "40m", "--fec", "8x8", "--file", file}
 	cmd := exec.Command(udpcastcmd, udpcastargs...)
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
-		os.Exit(1)
-	}
-	fmt.Printf("%s\n", out)
-
-	// var stdoutBuf, stderrBuf bytes.Buffer
-	// stdoutIn, err := cmd.StdoutPipe()
-	// stderrIn, err := cmd.StderrPipe()
-	// if err != nil {
-	// 	fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
-	// 	os.Exit(1)
-	// }
-	// var errStdout, errStderr error
-	// stdout := io.MultiWriter(os.Stdout, &stdoutBuf)
-	// stderr := io.MultiWriter(os.Stderr, &stderrBuf)
-
-	// err = cmd.Start()
-
+	// out, err := cmd.CombinedOutput()
 	// if err != nil {
 	// 	fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
 	// 	os.Exit(1)
 	// }
-	// go func() {
-	// 	_, errStdout = io.Copy(stdout, stdoutIn)
-	// }()
+	// fmt.Printf("%s\n", out)
 
-	// go func() {
-	// 	_, errStderr = io.Copy(stderr, stderrIn)
-	// }()
+	var stdoutBuf, stderrBuf bytes.Buffer
+	stdoutIn, err := cmd.StdoutPipe()
+	stderrIn, err := cmd.StderrPipe()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
+		os.Exit(1)
+	}
+	var errStdout, errStderr error
+	stdout := io.MultiWriter(os.Stdout, &stdoutBuf)
+	stderr := io.MultiWriter(os.Stderr, &stderrBuf)
 
-	// err = cmd.Wait()
-	// if err != nil {
-	// 	fmt.Fprintln(os.Stderr, "Error waiting for Cmd", err)
-	// 	os.Exit(1)
-	// }
-	// if errStdout != nil || errStderr != nil {
-	// 	log.Fatal("failed to capture stdout or stderr\n")
-	// }
-	// outStr, outErr := string(stdoutBuf.Bytes()), string(stderrBuf.Bytes())
+	err = cmd.Start()
 
-	// fmt.Println(outStr)
-	// fmt.Println(outErr)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
+		os.Exit(1)
+	}
+	go func() {
+		_, errStdout = io.Copy(stdout, stdoutIn)
+	}()
+
+	go func() {
+		_, errStderr = io.Copy(stderr, stderrIn)
+	}()
+
+	err = cmd.Wait()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error waiting for Cmd", err)
+		os.Exit(1)
+	}
+	if errStdout != nil || errStderr != nil {
+		log.Fatal("failed to capture stdout or stderr\n")
+	}
+	outStr, outErr := string(stdoutBuf.Bytes()), string(stderrBuf.Bytes())
+
+	fmt.Println(outStr)
+	fmt.Println(outErr)
 
 }
 
