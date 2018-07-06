@@ -38,12 +38,14 @@ func listen(w http.ResponseWriter, r *http.Request) {
 	log.Println("Hash of file: " + hashsum)
 	gocastlisten.Receive("./files/" + filename)
 
+	// Decompress file
+
 	hashbuilt, err := hashFileMd5(filename)
 	if err != nil {
 		log.Println(err.Error())
 	}
 	if hashbuilt == hashsum {
-		log.Println("File hash verified\nFile transfered successfully")
+		log.Println("File hash verified. File transfered successfully")
 		log.Println("Hash Expected: " + hashsum)
 		log.Println("Hash Recieved: " + hashbuilt)
 

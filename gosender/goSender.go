@@ -77,9 +77,10 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 
 	go startListening(filename, filehash)
 	time.Sleep(2 * time.Second)
-
+	// compress file
 	gocastsend.Send("./files/" + filename) // send file through diod
 	r.Body.Close()
+	// delete file locally
 }
 
 func startListening(file string, hash string) {
