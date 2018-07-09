@@ -82,8 +82,12 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 	time.Sleep(2 * time.Second)
 	// compress file
 	gocastsend.Send("./files/" + filename) // send file through diod
+
 	r.Body.Close()
-	// delete file locally
+	time.Sleep(time.Second)
+	log.Println("Deleting File: " + filename)
+	deleteFile(filename) // delete file locally
+
 }
 
 func startListening(file string, hash string) {
@@ -124,4 +128,12 @@ func hashFileMd5(filename string) (string, error) {
 	returnMD5String = hex.EncodeToString(hashInBytes)
 
 	return returnMD5String, nil
+}
+
+func deleteFile(filename string) {
+	err := os.Remove("./files/" + filename)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
 }
