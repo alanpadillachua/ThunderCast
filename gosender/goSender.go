@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/alanpadillachua/GoCast/gosender/gocastsend"
+	"github.com/gosuri/uiprogress"
 )
 
 const receiverListenIP = "http://172.24.0.194:3001/listen/v1?"
@@ -40,10 +41,13 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 		log.Println(err.Error())
 		return
 	}
+	uiprogress.Start()            // start rendering
+	bar := uiprogress.AddBar(100) // Add a new bar
 	//copy each part to destination.
 	filename := ""
 	for {
 		part, err := reader.NextPart()
+		bar.Incr()
 		if err == io.EOF {
 			break
 		}
