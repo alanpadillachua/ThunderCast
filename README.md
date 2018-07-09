@@ -1,7 +1,8 @@
 # ThunderCast
 
 ThunderCast is a golang wrapper for UDPCast.
-![ThunderCast logo ]()
+![ThunderCast logo ](./gosender/Public/images/Logo.png)
+![ThunderCast Gopher](./gosender/Public/images/gopher.png)
 
 ## Usage
 
