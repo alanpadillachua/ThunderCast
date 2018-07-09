@@ -1,6 +1,7 @@
-# GoUDPCast
+# ThunderCast
 
-GoUDPCast is a golang wrapper for UDPCast.
+ThunderCast is a golang wrapper for UDPCast.
+![ThunderCast logo ]()
 
 ## Usage
 
