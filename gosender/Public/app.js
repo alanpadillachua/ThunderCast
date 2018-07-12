@@ -27,6 +27,6 @@
         divNotification.classList.add(className);
         setTimeout(function() {
             divNotification.classList.remove(className);
-        }, 3000);
+        }, 10000);
     }
 })(document, axios)
