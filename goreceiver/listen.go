@@ -16,8 +16,7 @@ import (
 
 func main() {
 	router := mux.NewRouter()
-
-	router.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("./Public"))))
+	router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./Public/"))))
 	router.PathPrefix("/files/").Handler(http.StripPrefix("/files/", http.FileServer(http.Dir("files/"))))
 
 	router.HandleFunc("/listen/{vars}", listen).Methods("GET").Queries("filename", "{filename}", "hash", "{hash}")
