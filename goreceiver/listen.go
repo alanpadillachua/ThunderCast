@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"html/template"
 	"io"
 	"log"
 	"net/http"
@@ -16,12 +17,17 @@ import (
 
 const port string = ":3001"
 
+type fileListPage struct {
+	Title string
+}
+
 func main() {
 	router := mux.NewRouter()
 	router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./Public/"))))
 	router.PathPrefix("/files/").Handler(http.StripPrefix("/files/", http.FileServer(http.Dir("files/"))))
 
-	router.HandleFunc("/listen/{vars}", listen).Methods("GET").Queries("filename", "{filename}", "hash", "{hash}")
+	router.HandleFunc("/listen/{vars}", listenHdlr).Methods("GET").Queries("filename", "{filename}", "hash", "{hash}")
+	router.HandleFunc("/show/", fileListingHdlr).Methods("GET")
 	log.Println("Receiver Server")
 	log.Println("Listening on Port " + port)
 
@@ -30,7 +36,19 @@ func main() {
 
 }
 
-func listen(w http.ResponseWriter, r *http.Request) {
+func fileListingHdlr(w http.ResponseWriter, r *http.Request) {
+	p := fileListPage{Title: "ThunderCast Test Page"}
+
+	t, err := template.ParseFiles("./Public/basic.html")
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+	t.Execute(w, p)
+
+}
+
+func listenHdlr(w http.ResponseWriter, r *http.Request) {
 	log.Println("Connection from: " + r.Host)
 	params := mux.Vars(r)
 	filename := params["filename"]
