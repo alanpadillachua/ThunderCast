@@ -14,6 +14,8 @@ import (
 	"github.com/alanpadillachua/GoCast/goreceiver/gocastlisten"
 )
 
+const port string = ":3001"
+
 func main() {
 	router := mux.NewRouter()
 	router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./Public/"))))
@@ -21,10 +23,10 @@ func main() {
 
 	router.HandleFunc("/listen/{vars}", listen).Methods("GET").Queries("filename", "{filename}", "hash", "{hash}")
 	log.Println("Receiver Server")
-	log.Println("Listening on Port 3001")
+	log.Println("Listening on Port " + port)
 
 	loggedRouter := handlers.LoggingHandler(os.Stdout, router)
-	log.Fatal(http.ListenAndServe(":3001", loggedRouter))
+	log.Fatal(http.ListenAndServe(port, loggedRouter))
 
 }
 
