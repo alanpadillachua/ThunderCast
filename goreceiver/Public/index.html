@@ -14,6 +14,11 @@
 <body>
     <img src="images/Logo.png" alt="ThunderCast Logo">
     <h1>{{.Title}}</h1>
+    <ul>
+        {{range .Files}}
+            <li>{{.Title}}</li>
+        {{end}}
+    </ul>
 </body>
 
 </html>

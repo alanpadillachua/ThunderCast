@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"html/template"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -19,6 +20,7 @@ const port string = ":3001"
 
 type fileListPage struct {
 	Title string
+	Files []string
 }
 
 func main() {
@@ -39,7 +41,16 @@ func main() {
 }
 
 func fileListingHdlr(w http.ResponseWriter, r *http.Request) {
-	p := fileListPage{Title: "List of all files"}
+	files, err := ioutil.ReadDir("./files/")
+	if err != nil {
+		log.Fatal(err)
+	}
+	list := make([]string, 0)
+	for _, f := range files {
+		list = append(list, f.Name())
+	}
+
+	p := fileListPage{Title: "Files", Files: list}
 
 	t, err := template.ParseFiles("./Public/index.html")
 
