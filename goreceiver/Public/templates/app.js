@@ -1,6 +1,10 @@
-// const testFolder = './files/';
-// const fs = require('fs');
+$(function(){
 
-// fs.readdirSync(testFolder).forEach(file => {
-//   console.log(file);
-// })
+    $('#delButton').on('click', function (e) {
+    
+        alert('Hello!');
+    
+    });
+        
+    
+});
