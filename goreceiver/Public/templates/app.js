@@ -5,6 +5,4 @@ $(function(){
         alert('Hello!');
     
     });
-        
-    
 });
