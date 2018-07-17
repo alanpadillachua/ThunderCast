@@ -16,19 +16,28 @@
 
 <body>
     <div class="container">
-    <div class="page-header">
-        <img src="images/Logo.png" alt="ThunderCast Logo">     
-    </div>
+        <div class="page-header">
+            <img src="images/Logo.png" alt="ThunderCast Logo">     
+        </div>
     </div>
     <h1>{{.Title}}</h1>
     
+    <div class="container"></div>
     <div class="list-group" >
         {{range .Files}}
-            <a href="{{.Link}}" class="list-group-item list-group-item-action"> {{.Name}} </a>
-            <button type="button" class="btn btn-primary btn-sm">Delete</button>
-            <!-- <li class="list-group-item" > <a href="{{.Link}}">{{.Name}}</a></li> -->
+        <div class="row">  
+            <div class="col-md-3">
+                <a href="{{.Link}}" class="list-group-item list-group-item-action"> {{.Name}} </a>        
+                <!-- <li class="list-group-item" > <a href="{{.Link}}">{{.Name}}</a></li> -->
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary btn-sm">  <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span> Delete </button>
+            </div>
+        </div> 
         {{end}}
     </div>
+    </div>
+
 </body>
 
 </html>
