@@ -18,9 +18,13 @@ import (
 
 const port string = ":3001"
 
+type thunderFile struct {
+	Name string
+	Link string
+}
 type fileListPage struct {
 	Title string
-	Files []string
+	Files []thunderFile
 }
 
 func main() {
@@ -45,12 +49,12 @@ func fileListingHdlr(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	list := make([]string, 0)
+	var storage []thunderFile
 	for _, f := range files {
-		list = append(list, f.Name())
+		storage = append(storage, thunderFile{Name: f.Name(), Link: "/files/" + f.Name()})
 	}
 
-	p := fileListPage{Title: "Files", Files: list}
+	p := fileListPage{Title: "Files", Files: storage}
 
 	t, err := template.ParseFiles("./Public/index.html")
 
