@@ -24,12 +24,11 @@ type fileListPage struct {
 func main() {
 	router := mux.NewRouter()
 	router.PathPrefix("/images/").Handler(http.StripPrefix("/images/", http.FileServer(http.Dir("./Public/images/"))))
-
 	router.PathPrefix("/files/").Handler(http.StripPrefix("/files/", http.FileServer(http.Dir("files/"))))
+	router.PathPrefix("/templates/").Handler(http.StripPrefix("/templates/", http.FileServer(http.Dir("./Public/templates/"))))
+
 	router.HandleFunc("/", fileListingHdlr).Methods("GET")
 	router.HandleFunc("/listen/{vars}", listenHdlr).Methods("GET").Queries("filename", "{filename}", "hash", "{hash}")
-
-	//router.HandleFunc("/filelist", fileListingHdlr).Methods("GET")
 
 	log.Println("Receiver Server")
 	log.Println("Listening on Port " + port)
@@ -40,7 +39,7 @@ func main() {
 }
 
 func fileListingHdlr(w http.ResponseWriter, r *http.Request) {
-	p := fileListPage{Title: "ThunderCast"}
+	p := fileListPage{Title: "List of all files"}
 
 	t, err := template.ParseFiles("./Public/index.html")
 
