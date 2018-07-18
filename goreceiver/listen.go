@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -35,6 +36,7 @@ func main() {
 
 	router.HandleFunc("/", fileListingHdlr).Methods("GET")
 	router.HandleFunc("/listen/{vars}", listenHdlr).Methods("GET").Queries("filename", "{filename}", "hash", "{hash}")
+	router.HandleFunc("/delete/{id}", deleteHdlr).Methods("GET").Queries("id", "{id}")
 
 	log.Println("Receiver Server")
 	log.Println("Listening on Port " + port)
@@ -65,6 +67,32 @@ func fileListingHdlr(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func deleteHdlr(w http.ResponseWriter, r *http.Request) {
+	files, err := ioutil.ReadDir("./files/")
+	if err != nil {
+		log.Fatal(err)
+	}
+	var fileList []string
+	for _, f := range files {
+		fileList = append(fileList, f.Name())
+	}
+
+	log.Println("Delete Request From: " + r.Host)
+	params := mux.Vars(r)
+	fileID := params["id"]
+	index, err := strconv.Atoi(fileID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if index < len(fileList) {
+		log.Println("Deleting file id : " + fileList[index])
+		deleteFile(fileList[index])
+	} else {
+		log.Println("Delete Request Ignored: File Not Found")
+	}
+
+}
+
 func listenHdlr(w http.ResponseWriter, r *http.Request) {
 	log.Println("Connection from: " + r.Host)
 	params := mux.Vars(r)
@@ -89,6 +117,14 @@ func listenHdlr(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error File hash integreity lost. Please retry transfer ")
 		log.Println("Hash Expected: " + hashsum)
 		log.Println("Hash Recieved: " + hashbuilt)
+	}
+}
+
+func deleteFile(filename string) {
+	err := os.Remove("./files/" + filename)
+	if err != nil {
+		log.Println(err.Error())
+		return
 	}
 }
 
