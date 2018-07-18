@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <script src="templates/app.js"></script>
+    
     <div class="container">
         <div class="page-header">
             <img src="images/Logo.png" alt="ThunderCast Logo">     
@@ -24,21 +24,21 @@
     <h1>{{.Title}}</h1>
     
     <div class="container"></div>
-    <div class="list-group" >
-        {{range .Files}}
-        <div class="row">  
-            <div class="col-md-3">
-                <a href="{{.Link}}" class="list-group-item list-group-item-action"> {{.Name}} </a>        
-                <!-- <li class="list-group-item" > <a href="{{.Link}}">{{.Name}}</a></li> -->
-            </div>
-            <div class="col">
-                <button id="delButton" type="button" class="btn btn-primary btn-sm">  <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span> Delete </button>
-            </div>
-        </div> 
-        {{end}}
+        <div id="file_list" class="list-group" >
+            {{range .Files}}
+            <div class="row">  
+                <div class="col-md-3">
+                    <a href="{{.Link}}" class="list-group-item list-group-item-action"> {{.Name}} </a>        
+                   
+                </div>
+                <div class="col">
+                    <button id="delButton" type="button" class="btn btn-primary btn-sm">  <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span> Delete </button>
+                </div>
+            </div> 
+            {{end}}
+        </div>
     </div>
-    </div>
-
+    <script src="templates/app.js"></script>
 </body>
 
 </html>
