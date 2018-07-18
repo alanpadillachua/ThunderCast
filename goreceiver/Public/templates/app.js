@@ -30,8 +30,8 @@ for (var i = 0, len = g.children.length; i < len; i++)
 
     (function(index){
         g.children[i].onclick = function(){
-              console.log(devDeleteRequest+index);
-              deleteFile(devDeleteRequest+index);
+              console.log(deleteRequest+index);
+              deleteFile(deleteRequest+index);
         }    
     })(i);
 
