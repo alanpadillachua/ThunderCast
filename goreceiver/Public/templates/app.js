@@ -1,4 +1,4 @@
-const deleteRequest = "http://172.24.0.194:3001/delete/v1?id="
+const DeleteRequest = "http://172.24.0.194:3001/delete/v1?id="
 const devDeleteRequest = "http://localhost:3001/delete/v1?id="
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -29,9 +29,9 @@ for (var i = 0, len = g.children.length; i < len; i++)
 {
 
     (function(index){
-        g.children[i].onclick = function(){
-              console.log(deleteRequest+index);
-              deleteFile(deleteRequest+index);
+        g.children[i].children[1].onclick = function(){
+              //console.log(DeleteRequest+index);
+              deleteFile(DeleteRequest+index);
         }    
     })(i);
 
