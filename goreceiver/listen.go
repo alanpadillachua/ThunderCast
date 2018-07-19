@@ -117,6 +117,8 @@ func listenHdlr(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error File hash integreity lost. Please retry transfer ")
 		log.Println("Hash Expected: " + hashsum)
 		log.Println("Hash Recieved: " + hashbuilt)
+		log.Println("File will be deleted")
+		deleteFile(filename)
 	}
 }
 
