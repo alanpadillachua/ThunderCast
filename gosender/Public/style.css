@@ -1,3 +1,53 @@
+@-webkit-keyframes move
+{
+    from {
+        left: 0;
+        
+        
+    }
+    to {
+        left: 100%;
+        
+        
+    }
+}
+@keyframes move
+{
+    from {
+        left: 0;
+        opacity: 1;
+        
+        
+    }
+    to {
+        left: 100%;
+        opacity: 0;
+       
+    }
+}
+a#secret {
+    opacity: 0;
+    text-decoration: none;
+    padding-right: 20px;
+    left: 50%;
+    position: absolute;
+    -webkit-animation: move 5s;
+    animation: move 5s;
+    animation-delay: 15s;
+    animation-iteration-count: 1;
+}
+
+a#secret img {
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out; 
+    -o-transition: all 1s ease-in-out; 
+    -ms-transition: all 1s ease-in-out; 
+    border-radius:60px;
+    transition-duration: 1s;
+}
+
+
+
 body {
     margin: 0;
     padding: 0;
