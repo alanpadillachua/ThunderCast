@@ -34,7 +34,7 @@ a#secret {
     -webkit-animation: move 5s;
     animation: move 5s;
     animation-delay: 15s;
-    animation-iteration-count: 5;
+    animation-iteration-count: 1;
 }
 
 a#secret img {
