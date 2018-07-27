@@ -16,10 +16,11 @@ ThunderCast is a golang wrapper for UDPCast.
 
 ### Steps 
 1. Pull repo into both servers 
-2. Sending run `go run send.go`
-3. Recieving   run `go run listen.go`
-4. Localhost on port `3000` for sending 
-5. Localhost on port `3001` for recieving 
+2. Create files folder in goreciever and gosender
+3. Sending run `go run send.go`
+4. Recieving   run `go run listen.go`
+5. Localhost on port `3000` for sending 
+6. Localhost on port `3001` for recieving 
 
 ## API 
 
